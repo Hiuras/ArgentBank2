@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux"; // Import the useSelector hook
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import Nav from "../Ressources/Nav/Nav";
 import logo from '../assets/argentBankLogo.png';
 import chat from '../assets/icon-chat.png'
 import money from '../assets/icon-money.png'
@@ -16,22 +17,7 @@ function Accueil() {
   return (
     <div>
       <div className="banner">
-        <nav className="main-nav">
-          <Link to='/' className='main-nav-logo'>
-            <img 
-              src={logo} 
-              alt="logo du site"
-              className="main-nav-logo-image"
-            />
-            <h1 className="sr-only">Argent Bank</h1>
-          </Link>
-          <div>
-            <Link to='/signIn' className="main-nav-item">
-            <i className="fa-solid fa-circle-user"></i>
-            signIn
-            </Link>
-          </div>
-        </nav>
+        <Nav />
         <main>
           <div className="hero">
             <section className="hero-content">

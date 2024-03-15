@@ -5,6 +5,7 @@ const userInitialState = {
     email: null, // Adresse e-mail de l'utilisateur
     firstName: null, // Prénom de l'utilisateur
     lastName: null, // Nom de famille de l'utilisateur
+    userName: null, // Nom d'utilisateur
     id: null, // Identifiant de l'utilisateur
     error: null, // Erreur éventuelle liée à l'utilisateur
 }
@@ -19,6 +20,7 @@ const userSlice = createSlice({
             state.email = action.payload.body.email; // Adresse e-mail
             state.firstName = action.payload.body.firstName; // Prénom
             state.lastName = action.payload.body.lastName; // Nom de famille
+            state.userName = action.payload.body.userName; // Nom d'utilisateur
             state.id = action.payload.body.id; // Identifiant
             state.error = null; // Réinitialisation de l'erreur
         },
@@ -28,6 +30,7 @@ const userSlice = createSlice({
             state.email = null;
             state.firstName = null;
             state.lastName = null;
+            state.userName = null;
             state.id = null;
             state.error = action.payload.message;
         },
@@ -37,6 +40,7 @@ const userSlice = createSlice({
             state.email = null;
             state.firstName = null;
             state.lastName = null;
+            state.userName = null;
             state.id = null;
             state.error = null;
         },
@@ -46,6 +50,7 @@ const userSlice = createSlice({
             state.email = action.payload.body.email;
             state.firstName = action.payload.body.firstName;
             state.lastName = action.payload.body.lastName;
+            state.userName = action.payload.body.userName;
             state.id = action.payload.body.id;
             state.error = null; // Réinitialisation de l'erreur
         },
@@ -55,6 +60,7 @@ const userSlice = createSlice({
             state.email = action.payload.body.email;
             state.firstName = action.payload.body.firstName;
             state.lastName = action.payload.body.lastName;
+            state.userName = action.payload.body.userName;
             state.id = action.payload.body.id;
             state.error = action.payload.message; // Stockage de l'erreur
         }

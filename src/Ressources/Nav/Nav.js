@@ -5,10 +5,6 @@ import logo from '../../assets/argentBankLogo.png';
 import auth_service from '../../Components/actions/authActions';
 import { logoClick } from '../../Components/slices/loginSlice';
 
-/**
- * Composant représentant la barre de navigation.
- * @returns {JSX.Element} - Élément React représentant la barre de navigation.
- */
 const Nav = () => {
   // Récupération des données de l'utilisateur depuis le store Redux
   const user = useSelector((state) => state.user);
@@ -45,7 +41,7 @@ const Nav = () => {
       {isAuth === false ? (
         // Si l'utilisateur n'est pas connecté, afficher le lien vers la page de connexion
         <div>
-          <Link className="main-nav-item" to="/login">
+          <Link className="main-nav-item" to="/SignIn">
             <i className="fa fa-user-circle"></i>
             Sign In
           </Link>
@@ -55,7 +51,7 @@ const Nav = () => {
         <div className='main-nav-items'>
           <Link className="main-nav-item" to="/User">
             <i className="fa fa-user-circle"></i>
-            {user.firstName} {/* Afficher le prénom de l'utilisateur */}
+            {user.userName} {/* Afficher le prénom de l'utilisateur */}
           </Link>
           <span className="main-nav-item" onClick={onLogout}>
             <i className="fa fa-sign-out"></i>

@@ -39,7 +39,6 @@ export const login = (email, password, rememberMe) => async (dispatch) => {
       const token = JSON.stringify(response.data.body.token);
       rememberMe ? localStorage.setItem("token", token) : sessionStorage.setItem("token", token);
       dispatch(loginSuccess(response.data));
-      
       // Redirect to the User page after successful login
       const navigate = useNavigate();
       navigate('/User');
@@ -64,16 +63,28 @@ export const userProfile = () => dispatch => {
           dispatch(userFail(error.response));
       });
 };
-export const updateProfile = (firstName, lastName) => dispatch => {
+
+export const updateProfile = (userName) => async (dispatch) => {
   const token = getToken();
-  axios.put(`${BASE_URL}/user/profile`, { firstName, lastName }, { headers: { "Authorization": `Bearer ${token}` } })
-      .then(response => {
-          dispatch(userUpdateSuccess(response.data));
-      })
-      .catch(error => {
-          dispatch(userUpdateFail(error.response));
-      });
+  console.log("Token:", token); // Vérifiez que le token est correct
+  console.log("userName:", userName); // Vérifiez la valeur du nom d'utilisateur
+
+  try {
+    const response = await axios.put(
+      `${BASE_URL}/user/profile`,
+      { userName }, // Passer le nom d'utilisateur directement
+      { headers: { "Authorization": `Bearer ${token}` } }
+    );
+
+    console.log("Update success:", response.data); // Vérifiez la réponse du serveur en cas de succès
+    // dispatch(userUpdateSuccess(response.data));
+  } catch (error) {
+    console.error("Update failed:", error); // Affichez l'erreur en cas d'échec
+    // dispatch(userUpdateFail(error.response));
+  }
 };
+
+
 
 
 export const logout = () => dispatch => {
