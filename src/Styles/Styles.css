@@ -55,6 +55,7 @@ body {
 }
 .main-nav-item:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .main-nav-logo {

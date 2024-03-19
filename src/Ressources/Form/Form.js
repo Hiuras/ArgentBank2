@@ -15,7 +15,6 @@ function Form() {
     const token = useSelector((state) => state.login.token);
     const error = useSelector((state) => state.login.error);
     
-    // Effet pour récupérer les informations d'identification stockées lors du chargement du composant
     useEffect(() => {
         const storedEmail = localStorage.getItem('email');
         const storedPassword = localStorage.getItem('password');
@@ -28,12 +27,16 @@ function Form() {
         }
     }, []);
 
-    // Gérer le changement de la case à cocher "Se souvenir de moi"
+    useEffect(() => {
+        if (token !== null) {
+            navigate('/User');
+        }
+    }, [token, navigate]);
+
     const handleRememberMeChange = (e) => {
         const isChecked = e.target.checked;
         setRememberMe(isChecked);
 
-        // Stocker ou supprimer les informations d'identification en fonction de l'état de la case à cocher
         if (isChecked) {
             localStorage.setItem('email', email);
             localStorage.setItem('password', password);
@@ -45,15 +48,9 @@ function Form() {
         }
     };
 
-    // Gérer la soumission du formulaire de connexion
     const handleLogin = (e) => {
         e.preventDefault();
         dispatch(login(email, password, rememberMe));
-
-        // Rediriger l'utilisateur vers la page utilisateur après la connexion réussie
-        if (token !== null) {
-            navigate('/User');
-        }
     };
     
     return (
