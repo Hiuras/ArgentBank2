@@ -51,7 +51,7 @@ const Nav = () => {
         <div className='main-nav-items'>
           <Link className="main-nav-item" to="/User">
             <i className="fa fa-user-circle"></i>
-            {user.userName} {/* Afficher le prénom de l'utilisateur */}
+            {user.userName} {/* Afficher le pseudo de l'utilisateur */}
           </Link>
           <span className="main-nav-item" onClick={onLogout}>
             <i className="fa fa-sign-out"></i>

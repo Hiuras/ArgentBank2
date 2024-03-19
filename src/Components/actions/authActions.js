@@ -31,23 +31,46 @@ const getToken = () => {
   return token ? token.slice(1, -1) : null;
 };
 
-export const login = (email, password, rememberMe) => async (dispatch) => {
+export const login = (email, password, rememberMe, redirectCallback) => async (dispatch) => {
   try {
     const response = await axios.post(`${BASE_URL}/user/login`, { email, password });
     
     if (response && response.data && response.data.body && response.data.body.token) {
       const token = JSON.stringify(response.data.body.token);
+      
+      // Stockez les informations d'identification si "Se souvenir de moi" est activé
+      if (rememberMe) {
+        localStorage.setItem("email", email);
+        localStorage.setItem("password", password); // Stockez le mot de passe seulement si nécessaire
+      } else {
+        // Supprimez les informations d'identification précédemment stockées
+        localStorage.removeItem("email");
+        localStorage.removeItem("password");
+      }
+
       rememberMe ? localStorage.setItem("token", token) : sessionStorage.setItem("token", token);
       dispatch(loginSuccess(response.data));
-      // Redirect to the User page after successful login
-      const navigate = useNavigate();
-      navigate('/User');
+      
+      // Appelez la fonction de redirection passée en paramètre
+      if (typeof redirectCallback === 'function') {
+        redirectCallback('/User');
+      }
     } else {
       dispatch(loginFail("Invalid response from server"));
     }
   } catch (error) {
     // Handle errors appropriately here
     dispatch(loginFail(error.response?.data?.message || "An error occurred during login"));
+  }
+};
+
+export const loadRememberedUser = () => async (dispatch) => {
+  const rememberedUsername = localStorage.getItem("username");
+  const rememberedPassword = localStorage.getItem("password");
+  if (rememberedUsername) {
+    // Remplissez automatiquement les champs de connexion avec les informations d'identification mémorisées
+    dispatch(setUsername(rememberedUsername));
+    dispatch(setPassword(rememberedPassword)); // Assurez-vous que votre action setPassword est définie
   }
 };
 
@@ -66,26 +89,23 @@ export const userProfile = () => dispatch => {
 
 export const updateProfile = (userName) => async (dispatch) => {
   const token = getToken();
-  console.log("Token:", token); // Vérifiez que le token est correct
-  console.log("userName:", userName); // Vérifiez la valeur du nom d'utilisateur
+  console.log("Token:", token);
+  console.log("userName:", userName);
 
   try {
     const response = await axios.put(
       `${BASE_URL}/user/profile`,
-      { userName }, // Passer le nom d'utilisateur directement
+      { userName },
       { headers: { "Authorization": `Bearer ${token}` } }
     );
 
-    console.log("Update success:", response.data); // Vérifiez la réponse du serveur en cas de succès
-    // dispatch(userUpdateSuccess(response.data));
+    console.log("Update success:", response.data);
+    dispatch(userUpdateSuccess(response.data)); // Dispatch des données mises à jour
   } catch (error) {
-    console.error("Update failed:", error); // Affichez l'erreur en cas d'échec
-    // dispatch(userUpdateFail(error.response));
+    console.error("Update failed:", error);
+    dispatch(userUpdateFail(error.response));
   }
 };
-
-
-
 
 export const logout = () => dispatch => {
     sessionStorage.clear();
